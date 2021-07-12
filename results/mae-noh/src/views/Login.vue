@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="d-flex justify-content-center">
-  <b-form @submit.stop.prevent="Login(account, password)" @reset="onReset" v-if="show">
+  <b-form @submit.stop.prevent="Login(auth)" @reset="onReset" v-if="show">
         <b-form-group
             class="mb-2"
             id="input-group-account"
@@ -10,7 +10,7 @@
         >
           <b-form-input
               id="account"
-              v-model="account"
+              v-model="auth.account"
               type="account"
               placeholder="Enter Account"
               required
@@ -19,7 +19,7 @@
         <b-form-group class="mb-3" id="input-group-password" label="password" label-for="password">
           <b-form-input
               id="password"
-              v-model="password"
+              v-model="auth.password"
               placeholder="Enter Password"
               required
           ></b-form-input>
@@ -35,24 +35,24 @@
 
 <script lang="ts">
 
-import {Component, Vue} from 'vue-property-decorator'
-import axios from "axios"
+import {Component, Vue} from 'vue-property-decorator';
+import axios from "axios";
+import Auth from "../models/Auth";
 
 @Component
 export default class Login extends Vue{
 
-  account  = 'devbadak';
-  password  = '1234';
+  auth = new Auth('devbadak', '1234');
   show = true;
 
-  Login = (account : string, password : string) => {
-    console.log("account: " + account + " password: " + password);
+  Login = (auth: Auth) => {
+    console.log("account: " + auth.account + " password: " + auth.password);
     // POST
-    axios.post('http://localhost:5000/auth/login', JSON.stringify({"account": account, "password": password}),
+    axios.post('http://localhost:5000/auth/login', JSON.stringify({"account": auth.account, "password": auth.password}),
         { headers: { 'Content-Type': 'application/json' } })
         .then(function(response) {
           if (response.status == 200) {
-            console.log(response);
+            console.log('accessToken : ', response.data.accessToken);
           }
         })
         .catch((error) => {
@@ -63,8 +63,8 @@ export default class Login extends Vue{
   onReset(event : any): void {
     event.preventDefault()
     // Reset our form values
-    this.account = '';
-    this.password = '';
+    this.auth.account = '';
+    this.auth.password = '';
     // Trick to reset/clear native browser form validation state
     this.show = false;
     this.$nextTick(() => {
