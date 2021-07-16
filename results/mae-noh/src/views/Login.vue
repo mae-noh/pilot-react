@@ -36,7 +36,8 @@
 <script lang="ts">
 
 import {Component, Vue} from 'vue-property-decorator';
-import axios from "axios";
+import TokenService from "@/services/storage.service"
+import UserService from "@/services/user.service";
 import Auth from "../models/Auth";
 
 @Component
@@ -46,17 +47,10 @@ export default class Login extends Vue{
   show = true;
 
   Login = (auth: Auth) => {
-    console.log("account: " + auth.account + " password: " + auth.password);
-    // POST
-    axios.post('http://localhost:5000/auth/login', JSON.stringify({"account": auth.account, "password": auth.password}),
-        { headers: { 'Content-Type': 'application/json' } })
-        .then(function(response) {
-          if (response.status == 200) {
-            console.log('accessToken : ', response.data.accessToken);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
+    console.log(auth);
+    let result = UserService.login(auth.account, auth.password)
+        .then(()=> {
+          console.log('accesstoken : ' , TokenService.getToken());
         });
   };
 

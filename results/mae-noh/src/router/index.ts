@@ -1,21 +1,31 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
+import TokenService from '../services/storage.service';
+
 
 Vue.use(VueRouter);
 
 const Login = () => import("@/views/Login.vue");
+const UserInfo = () => import("@/views/UserInfo.vue");
+
+const requireAuth = () => (to: any, from: any, next: any) => {
+  const loggedIn = !!TokenService.getToken();
+  console.log('getToken: ', loggedIn)
+  if(!loggedIn) return next('/login');
+  next();
+}
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: Login
+  },
+  {
+    path: "/v1/users/me",
+    name: "UserInfo",
+    component: UserInfo,
+    beforeEnter: requireAuth()
   }
 ];
 
