@@ -11,7 +11,6 @@
           <b-form-input
               id="account"
               v-model="auth.account"
-              type="account"
               placeholder="Enter Account"
               required
           ></b-form-input>
@@ -36,8 +35,7 @@
 <script lang="ts">
 
 import {Component, Vue} from 'vue-property-decorator';
-import TokenService from "@/services/storage.service"
-import UserService from "@/services/user.service";
+import UserService from "@/services/userService";
 import Auth from "../models/Auth";
 
 @Component
@@ -46,11 +44,17 @@ export default class Login extends Vue{
   auth = new Auth('devbadak', '1234');
   show = true;
 
+  /**
+   * 1. 로그인 정보를 받는다. auth(account, password)
+   * 2. UserService login
+   * 3. 로그인 성공 시 사용자 정보 화면으로 이동한다.
+   *    TODO : 실패 시 에러 처리
+  * */
   Login = (auth: Auth) => {
     console.log(auth);
-    let result = UserService.login(auth.account, auth.password)
-        .then(()=> {
-          console.log('accesstoken : ' , TokenService.getToken());
+    let result = UserService.login(auth)
+        .then((res)=> {
+          this.$router.push('/v1/users/me')
         });
   };
 

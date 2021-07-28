@@ -1,4 +1,4 @@
-class Auth{
+export default class Auth{
     account: string;
     password: string;
 
@@ -7,5 +7,3 @@ class Auth{
         this.password = password;
     }
 }
-
-export default Auth;

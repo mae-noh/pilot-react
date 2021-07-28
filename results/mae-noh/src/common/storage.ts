@@ -1,25 +1,25 @@
-const TOKEN_KEY = 'access_token'
+const TOKEN_KEY = 'accessToken'
 
 /**
  * Manage the how Access Tokens are being stored and retreived from storage.
  *
  * Current implementation stores to localStorage. Local Storage should always be
- * accessed through this instace.
+ * accessed through this instance.
  **/
-const TokenService = {
+const Storage = {
 
     getToken() {
-        return localStorage.getItem(TOKEN_KEY)
+        return sessionStorage.getItem(TOKEN_KEY)
     },
 
     saveToken(accessToken : string) {
-        localStorage.setItem(TOKEN_KEY, accessToken)
+        sessionStorage.setItem(TOKEN_KEY, accessToken)
     },
 
     removeToken() {
-        localStorage.removeItem(TOKEN_KEY)
+        sessionStorage.removeItem(TOKEN_KEY)
     }
 
 }
 
-export default TokenService
+export default Storage

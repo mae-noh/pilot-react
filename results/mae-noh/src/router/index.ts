@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import TokenService from '../services/storage.service';
+import TokenService from '../common/storage';
 
 
 Vue.use(VueRouter);
