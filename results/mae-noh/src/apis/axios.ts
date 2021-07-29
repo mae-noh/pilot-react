@@ -1,5 +1,5 @@
 import axios, {AxiosInstance} from 'axios'
-import TokenService from '@/common/storage'
+import Storage from '@/common/storage'
 
 class Axios {
 
@@ -17,7 +17,7 @@ class Axios {
     }
 
     setHeader() {
-        this.instance.defaults.headers.common["Authorization"] = `Bearer ${TokenService.getToken()}`
+        this.instance.defaults.headers.common["Authorization"] = `Bearer ${Storage.getToken()}`
     }
 
     removeHeader() {

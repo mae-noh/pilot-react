@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex justify-content-center">
+    <b-button @click="Logout()">Logout</b-button>
     <b-form v-if="show">
       <b-form-group
           class="mb-2"
@@ -68,6 +69,13 @@ export default class UserInfo extends Vue {
       console.log(error)
     }
   }
+
+  Logout = () => {
+    let result = UserService.logout()
+        .then(()=> {
+          this.$router.push('/')
+        });
+  };
 
 }
 

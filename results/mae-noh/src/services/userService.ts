@@ -1,6 +1,6 @@
 import Auth from '@/models/Auth'
-import Axios from '@/common/axios'
-import SessionStorage from '@/common/storage'
+import Axios from '@/apis/axios'
+import Storage from '@/common/storage'
 
 const axios = new Axios();
 
@@ -20,8 +20,8 @@ const UserService = {
         try {
             const res = await axios.post('/auth/login', auth)
             console.log('response data', res.data.accessToken)
-            SessionStorage.saveToken(res.data.accessToken)
-            console.log('save token', SessionStorage.getToken())
+            Storage.saveToken(res.data.accessToken)
+            console.log('save token', Storage.getToken())
             return res.data.accessToken
         } catch (error) {
             console.log(error)
@@ -41,6 +41,21 @@ const UserService = {
             axios.setHeader()
             const res = await axios.get('/v1/users/me')
             return res.data;
+        } catch (error){
+            console.log(error)
+        }
+    },
+
+    /**
+     * 1. accessToken이 있는 경우
+     * 2. sessionStorage에서 토큰을 삭제
+     * */
+    logout: async function() {
+        try{
+            const token = await Storage.getToken()
+            console.log(token)
+            if(token) Storage.removeToken()
+            console.log('logout token expected null->', Storage.getToken())
         } catch (error){
             console.log(error)
         }
