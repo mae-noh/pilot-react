@@ -1,43 +1,43 @@
 import axios, {AxiosInstance} from 'axios'
 import Storage from '@/common/storage'
 
-class Axios {
+class HttpClient{
 
-    private readonly instance: AxiosInstance;
+    private readonly request: AxiosInstance;
 
     constructor() {
-        this.instance = axios.create({
+        this.request = axios.create({
             baseURL: process.env.VUE_APP_ROOT_API,
             headers: { 'Content-Type': 'application/json' }
         });
     }
 
     init(baseURL: string) {
-        this.instance.defaults.baseURL = baseURL;
+        this.request.defaults.baseURL = baseURL;
     }
 
     setHeader() {
-        this.instance.defaults.headers.common["Authorization"] = `Bearer ${Storage.getToken()}`
+        this.request.defaults.headers.common["Authorization"] = `Bearer ${Storage.getToken()}`
     }
 
     removeHeader() {
-        this.instance.defaults.headers.common = {}
+        this.request.defaults.headers.common = {}
     }
 
     get(resource: string) {
-        return this.instance.get(resource)
+        return this.request.get(resource)
     }
 
     post(resource: string, data: any) {
-        return this.instance.post(resource, data)
+        return this.request.post(resource, data)
     }
 
     delete(resource: string) {
-        return this.instance.delete(resource)
+        return this.request.delete(resource)
     }
 
     /**
-     * Perform a custom Axios request.
+     * Perform a custom HttpClient request.
      *
      * data is an object containing the following properties:
      *  - method
@@ -48,8 +48,8 @@ class Axios {
      *    - password
      **/
     customRequest(data: any) {
-        return this.instance(data)
+        return this.request(data)
     }
 }
 
-export default Axios
+export default HttpClient;

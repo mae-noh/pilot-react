@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="d-flex justify-content-center">
-  <b-form @submit.stop.prevent="Login(auth)" @reset="onReset" v-if="show">
+    <b-form @submit.stop.prevent="Login(auth)" @reset="onReset" v-if="show">
         <b-form-group
             class="mb-2"
             id="input-group-account"
@@ -18,6 +18,7 @@
         <b-form-group class="mb-3" id="input-group-password" label="password" label-for="password">
           <b-form-input
               id="password"
+              type="password"
               v-model="auth.password"
               placeholder="Enter Password"
               required
@@ -35,8 +36,9 @@
 <script lang="ts">
 
 import {Component, Vue} from 'vue-property-decorator';
+import HTTPError from "@/common/httpError";
+import Auth from "@/models/Auth";
 import UserService from "@/services/userService";
-import Auth from "../models/Auth";
 
 @Component
 export default class Login extends Vue{
@@ -47,15 +49,19 @@ export default class Login extends Vue{
   /**
    * 1. 로그인 정보를 받는다. auth(account, password)
    * 2. UserService login
-   * 3. 로그인 성공 시 사용자 정보 화면으로 이동한다.
-   *    TODO : 실패 시 에러 처리
+   * 3. 로그인 액세스 토큰이 존재하면, 사용자 정보 화면으로 이동한다.
+   *    TODO : 실패 시 에러 처리??
   * */
-  Login = (auth: Auth) => {
-    console.log(auth);
-    let result = UserService.login(auth)
-        .then((res)=> {
-          this.$router.push('/v1/users/me')
-        });
+  Login = async function(auth: Auth) {
+    // console.log(auth);
+    try {
+      let result = await UserService.login(auth)
+      if(result != null) await this.$router.push('/v1/users/me')
+    }catch (error){
+      if(error instanceof HTTPError){
+        error.showAlert()
+      }
+    }
   };
 
   onReset(event : any): void {

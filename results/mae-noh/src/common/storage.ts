@@ -1,11 +1,5 @@
 const TOKEN_KEY = 'accessToken'
 
-/**
- * Manage the how Access Tokens are being stored and retreived from storage.
- *
- * Current implementation stores to localStorage. Local Storage should always be
- * accessed through this instance.
- **/
 const Storage = {
 
     getToken() {

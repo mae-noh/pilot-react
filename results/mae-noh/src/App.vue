@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/v1/users/me">UserInfo</router-link>
+      <span v-if="$route.path == '/login'"><router-link to="/login">Login</router-link></span>
+      <span v-else> <router-link to="/v1/users/me">UserInfo</router-link></span>
     </div>
     <router-view />
   </div>
