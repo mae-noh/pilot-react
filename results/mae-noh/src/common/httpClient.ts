@@ -16,8 +16,8 @@ class HttpClient{
         this.request.defaults.baseURL = baseURL;
     }
 
-    setHeader() {
-        this.request.defaults.headers.common["Authorization"] = `Bearer ${Storage.getToken()}`
+    setHeader(token : string) {
+        this.request.defaults.headers.common["Authorization"] = `Bearer ${token}`
     }
 
     removeHeader() {

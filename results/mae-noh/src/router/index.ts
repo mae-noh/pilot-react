@@ -9,6 +9,7 @@ const Login = () => import("@/views/Login.vue");
 const UserInfo = () => import("@/views/UserInfo.vue");
 
 /**
+ * 네비게이션 가드
  * 로그인이 된 경우 해당 next url로 이동.
  *       아닌 경우 alert 후 로그인 페이지로 이동.
  */

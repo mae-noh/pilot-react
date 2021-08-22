@@ -53,6 +53,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import User from '../models/User';
 import UserService from "@/services/userService";
 import HTTPError from "@/common/httpError";
+import Storage from '@/common/storage'
+
+const userService = new UserService();
 
 @Component
 export default class UserInfo extends Vue {
@@ -66,8 +69,9 @@ export default class UserInfo extends Vue {
 
   GetUserInfo = async function (){
     try {
-      const res = await UserService.getUserInfo()
-      this.user = res
+      const token = Storage.getToken()
+      const res = await userService.getUserInfo(token)
+      this.user = res.data;
     }catch(error){
       // console.log('httpError? ' , error instanceof HTTPError)
       if(error instanceof HTTPError){
@@ -77,7 +81,7 @@ export default class UserInfo extends Vue {
   }
 
   Logout = async function() {
-    const result = await UserService.logout()
+    const result = await userService.logout()
     await this.$router.push('/')
   };
 

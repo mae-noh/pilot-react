@@ -40,6 +40,8 @@ import HTTPError from "@/common/httpError";
 import Auth from "@/models/Auth";
 import UserService from "@/services/userService";
 
+const userService = new UserService();
+
 @Component
 export default class Login extends Vue{
 
@@ -49,13 +51,13 @@ export default class Login extends Vue{
   /**
    * 1. 로그인 정보를 받는다. auth(account, password)
    * 2. UserService login
-   * 3. 로그인 액세스 토큰이 존재하면, 사용자 정보 화면으로 이동한다.
+   * 3. 로그인 성공시, 사용자 정보 화면으로 이동한다.
    *    TODO : 실패 시 에러 처리??
   * */
   Login = async function(auth: Auth) {
     // console.log(auth);
     try {
-      let result = await UserService.login(auth)
+      let result = await userService.login(auth)
       if(result != null) await this.$router.push('/v1/users/me')
     }catch (error){
       if(error instanceof HTTPError){
